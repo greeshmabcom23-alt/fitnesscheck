@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FitFlow – Fitness & Workout</title>
+  <meta name="description" content="A modern, responsive fitness website with workouts, calorie tracker, blog, meal plans, community forum, and contact." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+          colors: {
+            brand: {
+              50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+              400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a'
+            }
+          }
+        }
+      },
+      darkMode: 'class'
+    }
+  </script>
+  <style>
+    .glass { backdrop-filter: blur(10px); background: rgba(255,255,255,.12); }
+    .grid-auto-fit { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:1rem; }
+    .section { scroll-margin-top: 96px; }
+  </style>
+</head>
+<body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
+  <!-- Sticky Nav -->
+  <header class="sticky top-0 z-40 bg-white/80 dark:bg-zinc-900/70 backdrop-blur border-b border-zinc-200/60 dark:border-zinc-800">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-2 font-extrabold text-xl tracking-tight"><span class="inline-block p-2 rounded-xl bg-brand-600 text-white">FF</span> FitFlow</a>
+      <nav class="hidden md:flex gap-6 text-sm font-semibold">
+        <a class="hover:text-brand-600" href="#home">Home</a>
+        <a class="hover:text-brand-600" href="#workouts">Workouts</a>
+        <a class="hover:text-brand-600" href="#calories">Calorie Tracker</a>
+        <a class="hover:text-brand-600" href="#blog">Progress Blog</a>
+        <a class="hover:text-brand-600" href="#meals">Meal Plans</a>
+        <a class="hover:text-brand-600" href="#community">Community</a>
+        <a class="hover:text-brand-600" href="#contact">Contact</a>
+      </nav>
+      <div class="flex items-center gap-2">
+        <button id="themeToggle" class="p-2 rounded-xl border border-zinc-200 dark:border-zinc-800" title="Toggle theme" aria-label="Toggle theme">
+          <svg id="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-5"><path fill="currentColor" d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.79-1.79 1.41 1.41-1.79 1.8-1.41-1.42zM12 4V1h-2v3h2zm0 19v-3h-2v3h2zM4 12H1v-2h3v2zm19 0v-2h-3v2h3zM6.76 19.16l-1.42 1.42-1.79-1.8 1.41-1.41 1.8 1.79zM20.45 18.78l-1.41 1.41-1.8-1.79 1.42-1.42 1.79 1.8zM16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg id="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-5 hidden"><path fill="currentColor" d="M20.742 13.045a8.001 8.001 0 01-9.787-9.787 9 9 0 109.787 9.787z"/></svg>
+        </button>
+        <button class="md:hidden p-2 rounded-xl border border-zinc-200 dark:border-zinc-800" id="menuBtn" aria-label="Open menu">≡</button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden border-t border-zinc-200 dark:border-zinc-800 px-4 pb-3">
+      <div class="flex flex-col gap-3 py-3 text-sm font-semibold">
+        <a onclick="toggleMobile()" href="#home">Home</a>
+        <a onclick="toggleMobile()" href="#workouts">Workouts</a>
+        <a onclick="toggleMobile()" href="#calories">Calorie Tracker</a>
+        <a onclick="toggleMobile()" href="#blog">Progress Blog</a>
+        <a onclick="toggleMobile()" href="#meals">Meal Plans</a>
+        <a onclick="toggleMobile()" href="#community">Community</a>
+        <a onclick="toggleMobile()" href="#contact">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero / Home -->
+  <section id="home" class="section relative min-h-[80vh] flex items-center">
+    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2000&auto=format&fit=crop" alt="Athlete training" class="absolute inset-0 w-full h-full object-cover"/>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+    <div class="relative max-w-7xl mx-auto px-6 md:px-10 py-24 text-white">
+      <div class="max-w-3xl">
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">Build your best self with <span class="text-brand-300">FitFlow</span>.</h1>
+        <p class="mt-4 text-lg md:text-xl text-white/90">Free workouts, a calorie & macro tracker, a progress blog, meal plans, and a friendly community — all in one sleek page.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#workouts" class="px-5 py-3 rounded-2xl bg-brand-600 hover:bg-brand-500 font-semibold">Start a Workout</a>
+          <a href="#calories" class="px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 font-semibold border border-white/20">Track Calories</a>
+        </div>
+      </div>
+      <div class="mt-14 grid-auto-fit">
+        <div class="glass rounded-2xl p-5 border border-white/20">
+          <h3 class="font-bold">No paywalls</h3>
+          <p class="text-sm text-white/80">All features are local to your browser and free.</p>
+        </div>
+        <div class="glass rounded-2xl p-5 border border-white/20">
+          <h3 class="font-bold">Privacy-first</h3>
+          <p class="text-sm text-white/80">Your data stays on your device via localStorage.</p>
+        </div>
+        <div class="glass rounded-2xl p-5 border border-white/20">
+          <h3 class="font-bold">Designed for speed</h3>
+          <p class="text-sm text-white/80">Lightweight, responsive, and accessible.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workouts -->
+  <section id="workouts" class="section max-w-7xl mx-auto px-6 md:px-10 py-16">
+    <header class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-extrabold">Workout Routines</h2>
+        <p class="text-zinc-600 dark:text-zinc-400">Pick a plan or mix & match. Tap a card to expand.</p>
+      </div>
+      <div class="hidden md:flex items-center gap-2">
+        <input id="workoutSearch" placeholder="Search workouts..." class="px-4 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent"/>
+      </div>
+    </header>
+
+    <div id="workoutGrid" class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- Cards injected by JS -->
+    </div>
+  </section>
+
+  <!-- Calorie Tracker -->
+  <section id="calories" class="section bg-white dark:bg-zinc-900 border-y border-zinc-200 dark:border-zinc-800">
+    <div class="max-w-7xl mx-auto px-6 md:px-10 py-16">
+      <h2 class="text-3xl md:text-4xl font-extrabold">Calorie & Macro Tracker</h2>
+      <p class="text-zinc-600 dark:text-zinc-400">Estimate your daily needs, then log meals. Data is saved locally.</p>
+
+      <div class="mt-8 grid gap-8 lg:grid-cols-2">
+        <!-- Calculator -->
+        <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800">
+          <h3 class="font-bold text-xl">Daily Calories (TDEE)</h3>
+          <div class="mt-4 grid grid-cols-2 gap-3">
+            <label class="text-sm">Age<input id="age" type="number" min="10" class="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent" placeholder="25"></label>
+            <label class="text-sm">Sex
+              <select id="sex" class="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </label>
+            <label class="text-sm">Height (cm)<input id="height" type="number" class="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent" placeholder="170"></label>
+            <label class="text-sm">Weight (kg)<input id="weight" type="number" class="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent" placeholder="70"></label>
+            <label class="text-sm col-span-2">Activity Level
+              <select id="activity" class="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent">
+                <option value="1.2">Sedentary</option>
+                <option value="1.375">Light (1-3 days)</option>
+                <option value="1.55">Moderate (3-5 days)</option>
+                <option value="1.725">Very Active (6-7 days)</option>
+                <option value="1.9">Athlete (2x/day)</option>
+              </select>
+            </label>
+          </div>
+          <button id="calcTDEE" class="mt-4 px-4 py-2 rounded-xl bg-brand-600 text-white font-semibold">Calculate</button>
+          <div id="tdeeOut" class="mt-4 text-sm"></div>
+        </div>
+
+        <!-- Logger -->
+        <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800">
+          <h3 class="font-bold text-xl">Daily Log</h3>
+          <div class="mt-3 grid grid-cols-3 gap-3">
+            <input id="foodName" placeholder="Food name" class="col-span-2 px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent"/>
+            <input id="foodCals" type="number" placeholder="Calories" class="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent"/>
+          </div>
+          <div class="mt-3 grid grid-cols-2 gap-3">
+            <input id="foodProtein" type="number" placeholder="Protein (g)" class="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent"/>
+            <input id="foodCarbs" type="number" placeholder="Carbs (g)" class="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent"/>
+          </div>
+          <div class="mt-3 grid grid-cols-2 gap-3">
+            <input id="foodFat" type="number" placeholder="Fat (g)" class="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent"/>
+            <input id="logDate" type="date" class="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent"/>
+          </div>
+          <div class="mt-3 flex gap-2">
+            <button id="addFood" class="px-4 py-2 rounded-xl bg-brand-600 text-white font-semibold">Add</button>
+            <button id="clearDay" class="px-4 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700">Clear Day</button>
+          </div>
+          <div class="mt-5 overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="text-left bg-zinc-100 dark:bg-zinc-800/50">
+                <tr>
+                  <th class="p-2">Date</th>
+                  <th class="p-2">Food</th>
+                  <th class="p-2">Cal</th>
+                  <th class="p-2">P</th>
+                  <th class="p-2">C</th>
+                  <th class="p-2">F</th>
+                  <th class="p-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="logBody"></tbody>
+              <tfoot>
+                <tr class="font-semibold bg-zinc-50 dark:bg-zinc-900">
+                  <td class="p-2">Total</td>
+                  <td class="p-2"></td>
+                  <td class="p-2" id="totCal">0</td>
+                  <td class="p-2" id="totP">0</td>
+                  <td class="p-2" id="totC">0</td>
+                  <td class="p-2" id="totF">0</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Progress Blog -->
+  <section id="blog" class="section max-w-7xl mx-auto px-6 md:px-10 py-16">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-extrabold">Progress Blog</h2>
+        <p class="text-zinc-600 dark:text-zinc-400">Log milestones, photos, and thoughts. Saved locally.</p>
+      </div>
+      <button id="newPostBtn" class="px-4 py-2 rounded-xl bg-brand-600 text-white font-semibold">New Post</button>
+    </div>
+
+    <div id="blogGrid" class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- Posts injected by JS -->
+    </div>
+  </section>
+
+  <!-- Meal Plans -->
+  <section id="meals" class="section bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900 border-y border-zinc-200 dark:border-zinc-800">
+    <div class="max-w-7xl mx-auto px-6 md:px-10 py-16">
+      <h2 class="text-3xl md:text-4xl font-extrabold">Meal Plans</h2>
+      <p class="text-zinc-600 dark:text-zinc-400">Balanced templates for different goals. Swap as you like.</p>
+      <div class="mt-6 grid gap-5 lg:grid-cols-3">
+        <article class="rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1600&auto=format&fit=crop" alt="Lean meal" class="w-full h-48 object-cover"/>
+          <div class="p-5">
+            <h3 class="font-bold text-lg">Fat Loss (≈1800 kcal)</h3>
+            <ul class="mt-2 text-sm list-disc pl-5 space-y-1">
+              <li>Breakfast: Greek yogurt + berries + oats</li>
+              <li>Lunch: Grilled chicken salad, olive oil</li>
+              <li>Snack: Apple + peanut butter</li>
+              <li>Dinner: Baked salmon, quinoa, veggies</li>
+            </ul>
+          </div>
+        </article>
+        <article class="rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+          <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1600&auto=format&fit=crop" alt="Balanced meal" class="w-full h-48 object-cover"/>
+          <div class="p-5">
+            <h3 class="font-bold text-lg">Maintenance (≈2200 kcal)</h3>
+            <ul class="mt-2 text-sm list-disc pl-5 space-y-1">
+              <li>Breakfast: Veg omelette + toast</li>
+              <li>Lunch: Rice bowl (tofu/chicken), veggies</li>
+              <li>Snack: Cottage cheese + pineapple</li>
+              <li>Dinner: Whole-wheat pasta, turkey mince, salad</li>
+            </ul>
+          </div>
+        </article>
+        <article class="rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+          <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1600&auto=format&fit=crop" alt="High-protein meal" class="w-full h-48 object-cover"/>
+          <div class="p-5">
+            <h3 class="font-bold text-lg">Muscle Gain (≈2700 kcal)</h3>
+            <ul class="mt-2 text-sm list-disc pl-5 space-y-1">
+              <li>Breakfast: Oats + whey + banana</li>
+              <li>Lunch: Burrito bowl, beans, avocado</li>
+              <li>Snack: Smoothie (milk, whey, nut butter)</li>
+              <li>Dinner: Steak/chickpeas, rice, greens</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community -->
+  <section id="community" class="section max-w-7xl mx-auto px-6 md:px-10 py-16">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-extrabold">Community Forums</h2>
+        <p class="text-zinc-600 dark:text-zinc-400">Start a thread, ask for tips, cheer others on. Local-only.</p>
+      </div>
+      <button id="newThreadBtn" class="px-4 py-2 rounded-xl bg-brand-600 text-white font-semibold">New Thread</button>
+    </div>
+
+    <div id="threadList" class="mt-6 space-y-4">
+      <!-- Threads injected by JS -->
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section relative">
+    <img src="https://images.unsplash.com/photo-1554344728-77cf90d9ed26?q=80&w=2000&auto=format&fit=crop" alt="Gym ambience" class="absolute inset-0 w-full h-full object-cover"/>
+    <div class="absolute inset-0 bg-black/65"></div>
+    <div class="relative max-w-5xl mx-auto px-6 md:px-10 py-20 text-white">
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-extrabold">Contact</h2>
+          <p class="mt-2 text-white/80">Questions, ideas, or feedback? Drop a message below. This demo form keeps data local — or email via the button.</p>
+          <a href="mailto:hello@example.com" class="inline-block mt-4 px-5 py-3 rounded-2xl bg-brand-600 font-semibold">Email us</a>
+          <div class="mt-6 text-sm text-white/70">© <span id="year"></span> FitFlow. Free & open. Images via Unsplash.</div>
+        </div>
+        <form id="contactForm" class="bg-white/10 p-6 rounded-2xl border border-white/20">
+          <label class="text-sm block">Name
+            <input id="cName" class="mt-1 w-full px-3 py-2 rounded-xl bg-white/10 border border-white/30 placeholder-white/50" placeholder="Your name"/>
+          </label>
+          <label class="text-sm block mt-3">Email
+            <input id="cEmail" type="email" class="mt-1 w-full px-3 py-2 rounded-xl bg-white/10 border border-white/30 placeholder-white/50" placeholder="you@example.com"/>
+          </label>
+          <label class="text-sm block mt-3">Message
+            <textarea id="cMsg" rows="4" class="mt-1 w-full px-3 py-2 rounded-xl bg-white/10 border border-white/30 placeholder-white/50" placeholder="How can we help?"></textarea>
+          </label>
+          <button class="mt-4 w-full px-4 py-2 rounded-xl bg-brand-500 font-semibold">Send (Demo)</button>
+          <p id="contactToast" class="mt-3 text-sm hidden">✅ Message saved locally. We will get back ASAP (pretend 😉).</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-10 text-center text-sm text-zinc-600 dark:text-zinc-400">
+    <div class="max-w-7xl mx-auto px-6 md:px-10">
+      Built with ❤ using free resources. Swap images by editing the Unsplash URLs.
+    </div>
+  </footer>
+
+  <!-- Modals -->
+  <dialog id="postModal" class="p-0 rounded-2xl w-[95%] max-w-2xl">
+    <form method="dialog" class="p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+      <h3 class="text-xl font-bold">New Progress Post</h3>
+      <div class="mt-3 grid gap-3">
+        <input id="postTitle" placeholder="Title" class="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent"/>
+        <input id="postImg" placeholder="Image URL (optional)" class="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent"/>
+        <textarea id="postBody" rows="4" placeholder="What's new?" class="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent"></textarea>
+      </div>
+      <div class="mt-4 flex justify-end gap-2">
+        <button value="cancel" class="px-4 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700">Cancel</button>
+        <button id="savePost" class="px-4 py-2 rounded-xl bg-brand-600 text-white font-semibold">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="threadModal" class="p-0 rounded-2xl w-[95%] max-w-2xl">
+    <form method="dialog" class="p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+      <h3 class="text-xl font-bold">New Thread</h3>
+      <div class="mt-3 grid gap-3">
+        <input id="threadTitle" placeholder="Thread title" class="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent"/>
+        <textarea id="threadBody" rows="4" placeholder="Ask a question or share a tip" class="px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent"></textarea>
+      </div>
+      <div class="mt-4 flex justify-end gap-2">
+        <button value="cancel" class="px-4 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700">Cancel</button>
+        <button id="saveThread" class="px-4 py-2 rounded-xl bg-brand-600 text-white font-semibold">Post</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Scripts -->
+  <script>
+    // --- Theme toggle ---
+    const themeToggle = document.getElementById('themeToggle');
+    const pref = localStorage.getItem('fitflow-theme');
+    if (pref === 'dark' || (!pref && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      document.getElementById('sun').classList.add('hidden');
+      document.getElementById('moon').classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      document.getElementById('sun').classList.toggle('hidden', isDark);
+      document.getElementById('moon').classList.toggle('hidden', !isDark);
+      localStorage.setItem('fitflow-theme', isDark ? 'dark' : 'light');
+    });
+
+    // --- Mobile menu ---
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    function toggleMobile(){ mobileMenu.classList.toggle('hidden'); }
+    menuBtn?.addEventListener('click', toggleMobile);
+
+    // --- Year ---
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // --- Workouts data ---
+    const workouts = [
+      {name:'Full Body (No Equipment)', level:'Beginner', duration:30, img:'https://images.unsplash.com/photo-1598971639058-5e17c3a9c3db?q=80&w=1600&auto=format&fit=crop',
+       moves:[
+        'Jumping jacks – 45s','Bodyweight squats – 15 reps','Push-ups (knees if needed) – 10 reps','Glute bridges – 12 reps','Plank – 30s','Rest – 60s (repeat x3)']},
+      {name:'Upper Body Strength', level:'Intermediate', duration:40, img:'https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?q=80&w=1600&auto=format&fit=crop',
+       moves:['Warm-up row – 5 min','Bench press – 4×8','Bent-over row – 4×10','Shoulder press – 3×10','Lat pulldown – 3×12','Triceps dips – 3×12']},
+      {name:'Leg Day', level:'Intermediate', duration:45, img:'https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?q=80&w=1600&auto=format&fit=crop',
+       moves:['Squats – 5×5','Romanian deadlift – 4×8','Lunges – 3×12/leg','Leg press – 3×12','Calf raises – 3×15']},
+      {name:'HIIT Fat Burner', level:'Advanced', duration:20, img:'https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?q=80&w=1600&auto=format&fit=crop',
+       moves:['Sprint – 20s','Rest – 40s (x10)','Burpees – 10','Mountain climbers – 30s','Plank – 45s']},
+      {name:'Core Crusher', level:'All levels', duration:25, img:'https://images.unsplash.com/photo-1554284126-aa88f22d8b74?q=80&w=1600&auto=format&fit=crop',
+       moves:['Dead bug – 3×12','Hanging knee raises – 3×12','Side plank – 3×30s/side','Cable woodchop – 3×12/side','Hollow hold – 3×20s']},
+      {name:'Yoga Flow Recovery', level:'All levels', duration:30, img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1600&auto=format&fit=crop',
+       moves:['Cat-cow','Sun salutations – 3 rounds','Pigeon pose – 1 min/side','Bridge – 30s','Supine twist – 1 min/side']},
+    ];
+
+    const workoutGrid = document.getElementById('workoutGrid');
+    const workoutSearch = document.getElementById('workoutSearch');
+
+    function renderWorkouts(filter=''){ 
+      workoutGrid.innerHTML = '';
+      workouts
+        .filter(w => (w.name + w.level + w.moves.join(' ')).toLowerCase().includes(filter.toLowerCase()))
+        .forEach(w => {
+          const card = document.createElement('article');
+          card.className = 'group rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 hover:shadow-xl transition shadow-sm';
+          card.innerHTML = `
+            <div class="relative">
+              <img src="${w.img}" alt="${w.name}" class="w-full h-44 object-cover"/>
+              <div class="absolute top-2 left-2 px-2 py-1 text-xs rounded-full bg-black/60 text-white">${w.level}</div>
+              <div class="absolute top-2 right-2 px-2 py-1 text-xs rounded-full bg-black/60 text-white">${w.duration} min</div>
+            </div>
+            <div class="p-5">
+              <h3 class="font-bold">${w.name}</h3>
+              <details class="mt-2 text-sm">
+                <summary class="cursor-pointer select-none">View routine</summary>
+                <ul class="mt-2 list-disc pl-5 space-y-1">${w.moves.map(m=>`<li>${m}</li>`).join('')}</ul>
+              </details>
+            </div>`;
+          workoutGrid.appendChild(card);
+        });
+    }
+    renderWorkouts();
+    workoutSearch?.addEventListener('input', e => renderWorkouts(e.target.value));
+
+    // --- Calorie calculator ---
+    const age = document.getElementById('age');
+    const sex = document.getElementById('sex');
+    const height = document.getElementById('height');
+    const weight = document.getElementById('weight');
+    const activity = document.getElementById('activity');
+    const tdeeOut = document.getElementById('tdeeOut');
+    document.getElementById('calcTDEE').addEventListener('click', () => {
+      const A = parseFloat(age.value)||25, H = parseFloat(height.value)||170, W = parseFloat(weight.value)||70, S = sex.value, AF = parseFloat(activity.value)||1.2;
+      const BMR = S==='male' ? (10*W + 6.25*H - 5*A + 5) : (10*W + 6.25*H - 5*A - 161);
+      const TDEE = Math.round(BMR * AF);
+      const protein = Math.round(W * 1.6);
+      const fat = Math.round(W * 0.8);
+      const carbs = Math.round((TDEE - (protein*4 + fat*9)) / 4);
+      tdeeOut.innerHTML = `<div class='p-3 rounded-xl bg-zinc-100 dark:bg-zinc-800'>
+        <div><strong>BMR:</strong> ${Math.round(BMR)} kcal</div>
+        <div><strong>TDEE:</strong> ${TDEE} kcal/day</div>
+        <div class='mt-1 text-xs text-zinc-600 dark:text-zinc-400'>Macro guide: P ${protein}g · C ${carbs}g · F ${fat}g</div>
+      </div>`;
+    });
+
+    // --- Calorie log ---
+    const logKey = 'ff-calorie-log';
+    const logBody = document.getElementById('logBody');
+    const totCal = document.getElementById('totCal');
+    const totP = document.getElementById('totP');
+    const totC = document.getElementById('totC');
+    const totF = document.getElementById('totF');
+
+    function getLog(){ return JSON.parse(localStorage.getItem(logKey) || '[]'); }
+    function setLog(v){ localStorage.setItem(logKey, JSON.stringify(v)); }
+
+    function renderLog(){
+      const rows = getLog();
+      logBody.innerHTML = '';
+      let c=0,p=0,cb=0,f=0;
+      rows.forEach((r,i)=>{
+        c+=r.cal||0; p+=r.p||0; cb+=r.c||0; f+=r.f||0;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class='p-2 whitespace-nowrap'>${r.date||''}</td>
+          <td class='p-2'>${r.name}</td>
+          <td class='p-2'>${r.cal||0}</td>
+          <td class='p-2'>${r.p||0}</td>
+          <td class='p-2'>${r.c||0}</td>
+          <td class='p-2'>${r.f||0}</td>
+          <td class='p-2'><button class='px-2 py-1 text-xs rounded-lg border' data-i='${i}'>Delete</button></td>`;
+        logBody.appendChild(tr);
+      });
+      totCal.textContent = c; totP.textContent = p; totC.textContent = cb; totF.textContent = f;
+      logBody.querySelectorAll('button').forEach(btn=>btn.addEventListener('click', (e)=>{
+        const idx = parseInt(e.target.getAttribute('data-i')); const arr = getLog(); arr.splice(idx,1); setLog(arr); renderLog();
+      }));
+    }
+
+    document.getElementById('addFood').addEventListener('click', ()=>{
+      const name = document.getElementById('foodName').value?.trim();
+      const cal = parseInt(document.getElementById('foodCals').value)||0;
+      const p = parseInt(document.getElementById('foodProtein').value)||0;
+      const c = parseInt(document.getElementById('foodCarbs').value)||0;
+      const f = parseInt(document.getElementById('foodFat').value)||0;
+      const date = document.getElementById('logDate').value || new Date().toISOString().slice(0,10);
+      if(!name){ alert('Enter a food name'); return; }
+      const arr = getLog(); arr.push({date, name, cal, p, c, f}); setLog(arr);
+      ['foodName','foodCals','foodProtein','foodCarbs','foodFat'].forEach(id=>document.getElementById(id).value='');
+      renderLog();
+    });
+    document.getElementById('clearDay').addEventListener('click', ()=>{ setLog([]); renderLog(); });
+    renderLog();
+
+    // --- Blog ---
+    const blogKey = 'ff-blog-posts';
+    const blogGrid = document.getElementById('blogGrid');
+    function getPosts(){ return JSON.parse(localStorage.getItem(blogKey)||'[]'); }
+    function setPosts(v){ localStorage.setItem(blogKey, JSON.stringify(v)); }
+    function renderPosts(){
+      blogGrid.innerHTML = '';
+      getPosts().forEach((p,idx)=>{
+        const card = document.createElement('article');
+        card.className = 'rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800';
+        card.innerHTML = `
+          ${p.img ? `<img src='${p.img}' alt='${p.title}' class='w-full h-40 object-cover'/>` : ''}
+          <div class='p-5'>
+            <div class='text-xs text-zinc-500'>${p.date}</div>
+            <h3 class='font-bold mt-1'>${p.title}</h3>
+            <p class='mt-2 text-sm'>${p.body}</p>
+            <div class='mt-3 flex gap-2'>
+              <button class='px-3 py-1 text-xs rounded-lg border' data-act='del' data-i='${idx}'>Delete</button>
+            </div>
+          </div>`;
+        blogGrid.appendChild(card);
+      });
+      blogGrid.querySelectorAll('button').forEach(b=>b.addEventListener('click', (e)=>{
+        const i = parseInt(e.target.getAttribute('data-i'));
+        const arr = getPosts(); arr.splice(i,1); setPosts(arr); renderPosts();
+      }));
+    }
+
+    const postModal = document.getElementById('postModal');
+    document.getElementById('newPostBtn').addEventListener('click', ()=> postModal.showModal());
+    document.getElementById('savePost').addEventListener('click', (e)=>{
+      e.preventDefault();
+      const title = document.getElementById('postTitle').value.trim();
+      const body = document.getElementById('postBody').value.trim();
+      const img = document.getElementById('postImg').value.trim();
+      if(!title || !body){ alert('Please add a title and some text.'); return; }
+      const date = new Date().toLocaleString();
+      const arr = getPosts(); arr.unshift({title, body, img, date}); setPosts(arr);
+      postModal.close();
+      ['postTitle','postBody','postImg'].forEach(id=>document.getElementById(id).value='');
+      renderPosts();
+    });
+    renderPosts();
+
+    // --- Community ---
+    const forumKey = 'ff-forum-threads';
+    function getThreads(){ return JSON.parse(localStorage.getItem(forumKey)||'[]'); }
+    function setThreads(v){ localStorage.setItem(forumKey, JSON.stringify(v)); }
+    function renderThreads(){
+      const list = document.getElementById('threadList');
+      list.innerHTML = '';
+      getThreads().forEach((t,idx)=>{
+        const wrap = document.createElement('article');
+        wrap.className = 'rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden';
+        wrap.innerHTML = `
+          <div class='p-5'>
+            <div class='flex items-start justify-between gap-4'>
+              <div>
+                <h3 class='font-bold'>${t.title}</h3>
+                <div class='text-xs text-zinc-500'>${t.date}</div>
+              </div>
+              <button class='px-3 py-1 text-xs rounded-lg border' data-act='del' data-i='${idx}'>Delete</button>
+            </div>
+            <p class='mt-2 text-sm'>${t.body}</p>
+            <div class='mt-4'>
+              <h4 class='font-semibold text-sm'>Replies</h4>
+              <div class='space-y-2 mt-2' id='replies-${idx}'>${t.replies.map(r=>`<div class='text-sm p-2 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800'><span class='font-semibold'>${r.name}</span>: ${r.text}</div>`).join('')}</div>
+              <div class='mt-3 flex gap-2'>
+                <input placeholder='Your name' class='px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent' id='rname-${idx}'>
+                <input placeholder='Write a reply' class='flex-1 px-3 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent' id='rtext-${idx}'>
+                <button class='px-4 py-2 rounded-xl bg-brand-600 text-white text-sm' data-act='reply' data-i='${idx}'>Reply</button>
+              </div>
+            </div>
+          </div>`;
+        list.appendChild(wrap);
+      });
+      list.querySelectorAll('button').forEach(btn=>btn.addEventListener('click', (e)=>{
+        const i = parseInt(e.target.getAttribute('data-i'));
+        const act = e.target.getAttribute('data-act');
+        if(act==='del'){ const arr=getThreads(); arr.splice(i,1); setThreads(arr); renderThreads(); return; }
+        if(act==='reply'){
+          const name = document.getElementById(`rname-${i}`).value.trim() || 'Guest';
+          const text = document.getElementById(`rtext-${i}`).value.trim();
+          if(!text) return;
+          const arr = getThreads();
+          arr[i].replies.push({name, text});
+          setThreads(arr); renderThreads();
+        }
+      }));
+    }
+    const threadModal = document.getElementById('threadModal');
+    document.getElementById('newThreadBtn').addEventListener('click', ()=> threadModal.showModal());
+    document.getElementById('saveThread').addEventListener('click', (e)=>{
+      e.preventDefault();
+      const title = document.getElementById('threadTitle').value.trim();
+      const body = document.getElementById('threadBody').value.trim();
+      if(!title || !body){ alert('Please add a title and body.'); return; }
+      const date = new Date().toLocaleString();
+      const arr = getThreads(); arr.unshift({title, body, date, replies:[]}); setThreads(arr);
+      threadModal.close();
+      ['threadTitle','threadBody'].forEach(id=>document.getElementById(id).value='');
+      renderThreads();
+    });
+    renderThreads();
+
+    // --- Contact form (demo) ---
+    document.getElementById('contactForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('cName').value.trim(),
+        email: document.getElementById('cEmail').value.trim(),
+        message: document.getElementById('cMsg').value.trim(),
+        date: new Date().toISOString()
+      };
+      const stash = JSON.parse(localStorage.getItem('ff-contact')||'[]');
+      stash.push(data); localStorage.setItem('ff-contact', JSON.stringify(stash));
+      const toast = document.getElementById('contactToast'); toast.classList.remove('hidden');
+      setTimeout(()=> toast.classList.add('hidden'), 4000);
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
